@@ -2,7 +2,7 @@
 
 set -o errexit
 
-files_url='https://files.balena-cloud.com' # URL exporting S3 XML
+files_url='https://storage.googleapis.com/autonomy-vision/L4T' # URL exporting S3 XML
 s3_xml=$(curl -L -s $files_url)
 
 # From https://stackoverflow.com/a/7052168
@@ -92,8 +92,8 @@ function list_versions()
 function get_and_build()
 {
 	local path="$1"
-	local pattern="^(esr-)?images/(.*)/(.*)/"
-	[[ "$path" =~ $pattern ]] || fatal "Invalid path '$path'?!"
+	# local pattern="^(esr-)?images/(.*)/(.*)/"
+	# [[ "$path" =~ $pattern ]] || fatal "Invalid path '$path'?!"
 
 	local device="${BASH_REMATCH[2]}"
 	local version="${BASH_REMATCH[3]}"
@@ -105,7 +105,7 @@ function get_and_build()
 	tmp_path=$(mktemp --directory)
 	push $tmp_path
 
-	if ! wget $(echo "$url" | sed -e 's/+/%2B/g'); then
+	if ! wget $url; then
 		pop
 		rm -rf "$tmp_path"
 
@@ -225,8 +225,9 @@ fi
 didFail=
 failedVersions=""
 
+headers_url=("kernel_modules_headers.tar.gz" "kernel_source.tar.gz")
 for version in $versions; do
-	for path in $(get_header_paths "$device" "$version"); do
+	for path in "${headers_url[@]}"; do
 
 		echo "Building $path..."
 
