@@ -142,7 +142,9 @@ function get_and_build()
 	# Kernel headers for some devices need a few workarounds to build. These workarounds either effect
 	# the build environment. Or the headers were incorrectly generated during the os build stage.
 	# The full kernel source tarball available from v2.30+ should always work.
-	/usr/src/app/workarounds.sh $device $version $output_dir
+
+	# Not useful for JETSON XAVIER
+	# /usr/src/app/workarounds.sh $device $version $output_dir
 
 	# Check if we have fetched the kernel_source tarball
 	if [[ $filename == *"source"* ]]; then
