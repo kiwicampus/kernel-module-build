@@ -227,7 +227,7 @@ fi
 didFail=
 failedVersions=""
 
-headers_url=("kernel_source3.tar.gz" "kernel_modules_headers3.tar.gz")
+headers_url=("kernel_source3.tar.gz")
 for version in $versions; do
 	for path in "${headers_url[@]}"; do
 
